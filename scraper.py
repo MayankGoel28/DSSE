@@ -1,6 +1,7 @@
 from parsel import Selector
 from pprint import pprint
 from requests import get
+from json import dump
 from re import sub
 
 MAX_PAGES = 5
@@ -65,6 +66,14 @@ for category, link in categories.items():
     for pagenum in range(MAX_PAGES):
         print(f"Page: {pagenum+1}")
         page = scrape_page(f"{link}&page={pagenum+1}")
-        pprint(page)
-        print("Done!\n")
+
+        if page:
+            with open(f"{category}-{pagenum+1}.json", "w") as page_json:
+                dump(page, page_json)
+            print("Done!\n")
+        else:
+            with open("failure.log", "a") as failure_log:
+                failure_log.write(f"{link}&page={pagenum+1}\n")
+            print("Failed! Written to logs.\n")
+
 print("gg.")
