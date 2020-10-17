@@ -3,6 +3,8 @@ from pprint import pprint
 from requests import get
 from re import sub
 
+MAX_PAGES = 5
+
 XPATHS = {
     "products": "//a[@class='product-title-link line-clamp line-clamp-2 truncate-title']/@href",
     "title": "//h1[@class='prod-ProductTitle prod-productTitle-buyBox font-bold']/text()",
@@ -13,11 +15,13 @@ XPATHS = {
     "tags": "//ul[@class='IpsumModuleLinksWrapper-desktop-link']/li/a/text()",
 }
 
-MAX_PAGES = 5
-
 host = "https://www.walmart.com"
 
-categories = {"electronics": "https://www.walmart.com/search/?cat_id=3944"}
+categories = {
+    "electronics": "https://www.walmart.com/search/?cat_id=3944",
+    "food": "https://www.walmart.com/search/?cat_id=976759",
+    "personal_care": "https://www.walmart.com/search/?cat_id=976759",
+}
 
 
 def scrape_item(url):
@@ -41,17 +45,26 @@ def scrape_item(url):
         "tags": tags,
     }
 
-    pprint(item)
+    return item
 
 
 def scrape_page(url):
     text = get(url).text
     selector = Selector(text=text)
     products = selector.xpath(XPATHS["products"]).getall()
+    page = []
     for product in products:
-        scrape_item(f"{host}{product}")
+        item = scrape_item(f"{host}{product}")
+        page.append(item)
+
+    return page
 
 
 for category, link in categories.items():
-    for page in range(MAX_PAGES):
-        scrape_page(f"{link}&page={page+1}")
+    print(f"Now scraping: {category}")
+    for pagenum in range(MAX_PAGES):
+        print(f"Page: {pagenum+1}")
+        page = scrape_page(f"{link}&page={pagenum+1}")
+        pprint(page)
+        print("Done!\n")
+print("gg.")
