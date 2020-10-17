@@ -69,7 +69,7 @@ for category, link in categories.items():
 
         if page:
             with open(f"{category}-{pagenum+1}.json", "w") as page_json:
-                dump(page, page_json)
+                dump(page, page_json, indent=4, separators=(",", ": "))
             print("Done!\n")
         else:
             with open("failure.log", "a") as failure_log:
