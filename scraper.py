@@ -16,9 +16,18 @@ headers = {
 
 categories = {"electronics": "https://www.walmart.com/search/?cat_id=3944"}
 
+
+def scrape_item(url):
+    print(url)
+
+
+def scrape_page(url):
+    selector = Selector(text=get(url, headers=headers).text)
+    products = selector.xpath(XPATHS["products"]).getall()
+    for product in products:
+        scrape_item(product)
+
+
 for category, link in categories.items():
     for page in range(MAX_PAGES):
-        selector = Selector(text=get(f"{link}&page={page+1}", headers=headers).text)
-        products = selector.xpath(XPATHS["products"]).getall()
-        print(len(products))
-        pprint(products)
+        scrape_page(f"{link}&page={page+1}")
