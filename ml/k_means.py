@@ -2,29 +2,30 @@ import json
 import pickle
 import numpy as np
 from nltk.stem import PorterStemmer
+
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.cluster import KMeans
-from sklearn.metrics.pairwise import euclidean_distances
+
 import matplotlib.pyplot as plt
+
+# TEMPORARY
 from clean_electronics import tags_list as corpus
 
 ps = PorterStemmer()
-sentences = []
-for sentence in corpus:
-    temp = ""
-    for word in sentence.split():
-        temp += ps.stem(word) + " "
-    sentences.append(temp)
-
 vectorizer = TfidfVectorizer(analyzer='word', stop_words='english')
-X = vectorizer.fit_transform(sentences)
-# print(X.shape)
 
-def softmax(x):
-    e_x = np.exp(x - np.max(x))
-    return e_x / e_x.sum()
+def get_X_from_corpus(corpus=None):
+    sentences = []
+    for sentence in corpus:
+        temp = ""
+        for word in sentence.split():
+            temp += ps.stem(word) + " "
+        sentences.append(temp)
 
-def get_best_model(min_val, max_val, draw=True, show_top_labels=True):
+    X = vectorizer.fit_transform(sentences)
+    return X
+
+def get_best_model(X=None, min_val=2, max_val=20, draw=False, show_top_labels=False):
     K = range(min_val, max_val+1)
     
     costs = []
@@ -49,9 +50,9 @@ def get_best_model(min_val, max_val, draw=True, show_top_labels=True):
         plt.show()
 
     best_k = costs.index(sorted(costs)[0]) + min_val
-    print(f"The {best_k}th is the best cluster size")
 
     if show_top_labels:
+        print(f"The {best_k}th is the best cluster size")
         print("Top terms per cluster:")
         order_centroids = model.cluster_centers_.argsort()[:, ::-1]
         terms = vectorizer.get_feature_names()
@@ -61,30 +62,21 @@ def get_best_model(min_val, max_val, draw=True, show_top_labels=True):
                 print(terms[i], end=" ")
             print()
 
-    return best_model
-
-def get_predictions(model=None):
-    user_input = input("Enter the Query: ").strip()
-    cleaned_input = ""
-    for word in sorted(user_input.lower().split()):
-        cleaned_input += ps.stem(word) + " "
-
-    Y = vectorizer.transform([cleaned_input])
-    prediction = model.predict(Y)[0]+1
-    print(prediction)
-
-    scores = []
-    for center in model.cluster_centers_:
-        scores.append(-np.linalg.norm(center-Y))
-    
-    for score in sorted(softmax(scores), reverse=True):
-        print(f"{round(score*100, 2)}%")
+    return best_model, best_k
 
 if __name__ == "__main__":
-    k_min_val = 2
-    k_max_val = 20
-    model = get_best_model(k_min_val, k_max_val, draw=True)
-    pickle.dump(model, open('electronics.model', 'wb'))
+    hierarchy = {}
 
-    pickle.load(open('electronics.model', 'rb'))
-    get_predictions(model)
+    for x in hierarchy.keys():
+        for y in hierarchy[x]:
+            ### LOAD INPUT HERE
+            corpus = None
+            ### DONE LOADING THE CLEANED INPUT
+
+            X = get_X_from_corpus(corpus)
+            model, z = get_best_model(X)
+            
+            # x is category
+            # y is sub-category
+            # z is k size selected
+            pickle.dump(model, open(f'models/{x}/{y}.model', 'wb'))
