@@ -4,7 +4,7 @@ from requests import get
 from json import dump
 from re import sub
 
-MAX_PAGES = 3
+MAX_PAGES = 1
 
 XPATHS = {
     "products": "//a[@class='product-title-link line-clamp line-clamp-2 truncate-title']/@href",
@@ -13,15 +13,17 @@ XPATHS = {
     "stars": "//span[@itemprop='ratingValue']/text()",
     "ratings": "//span[@class='stars-reviews-count-node']/text()",
     "img": "//img[@class='hover-zoom-hero-image']/@src",
-    "tags": "//ul[@class='IpsumModuleLinksWrapper-desktop-link']/li/a/text()",
+    "tags": "//ul[@class='IpsumModuleLinksWrapper-desktop-link']/li/a/@href",
+    "related": "//ul[@class='IpsumModuleLinksWrapper-desktop-link']/li/a/text()",
+    "about": "//*[@id='about-product-section']/div/div[1]/div[1]/div[3]/text()"
 }
 
 host = "https://www.walmart.com"
 
 categories = {
-    "electronics": "https://www.walmart.com/search/?cat_id=3944&grid=false&sort=best_seller",
-    "food": "https://www.walmart.com/search/?cat_id=976759&grid=false&sort=best_seller",
-    "personal_care": "https://www.walmart.com/search/?cat_id=976759&grid=false&sort=best_seller",
+    "electronics": "https://www.walmart.com/search/?cat_id=3944&sort=best_seller",
+    "food": "https://www.walmart.com/search/?cat_id=976759&sort=best_seller",
+    "personal_care": "https://www.walmart.com/search/?cat_id=976759&&sort=best_seller",
 }
 
 
@@ -36,14 +38,17 @@ def scrape_item(url):
         price = selector.xpath(XPATHS["price"]).get()
         stars = selector.xpath(XPATHS["stars"]).get()
         ratings = selector.xpath(XPATHS["ratings"]).get()
+        related = selector.xpath(XPATHS["related"]).getall()
+        about = selector.xpath(XPATHS["about"]).get()
 
     item = {
         "title": title,
+        "url": url,
         "price": price,
         "stars": stars if stars else 0,
         "ratings": ratings[:-7] if stars else 0,
         "img": img[2:] if img else "",
-        "tags": tags,
+        "tags": [(tagname, tag) for tagname, tag in zip(related, tags)],
     }
 
     return item
