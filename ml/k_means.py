@@ -79,6 +79,4 @@ if __name__ == "__main__":
             # x is category
             # y is sub-category
             # z is k size selected
-            pickle.dump(model, open(f'{x}/{y}.model', 'wb'))
-
-    # get_predictions(model)
+            pickle.dump(model, open(f'models/{x}/{y}.model', 'wb'))
