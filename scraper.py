@@ -4,7 +4,7 @@ from requests import get
 from json import dump
 from re import sub
 
-MAX_PAGES = 5
+MAX_PAGES = 3
 
 XPATHS = {
     "products": "//a[@class='product-title-link line-clamp line-clamp-2 truncate-title']/@href",
@@ -19,9 +19,9 @@ XPATHS = {
 host = "https://www.walmart.com"
 
 categories = {
-    "electronics": "https://www.walmart.com/search/?cat_id=3944",
-    "food": "https://www.walmart.com/search/?cat_id=976759",
-    "personal_care": "https://www.walmart.com/search/?cat_id=976759",
+    "electronics": "https://www.walmart.com/search/?cat_id=3944&grid=false&sort=best_seller",
+    "food": "https://www.walmart.com/search/?cat_id=976759&grid=false&sort=best_seller",
+    "personal_care": "https://www.walmart.com/search/?cat_id=976759&grid=false&sort=best_seller",
 }
 
 
@@ -65,14 +65,18 @@ if __name__ == "__main__":
             print(f"Page: {pagenum+1}")
 
             try:
-                page = scrape_page(f"{link}&page={pagenum+1}")
+                for trail in range(3):
+                    page = scrape_page(f"{link}&page={pagenum+1}")
 
-                if page:
-                    with open(f"{category}-{pagenum+1}.json", "w") as page_json:
-                        dump(page, page_json, indent=4, separators=(",", ": "))
-                    print("Done!\n")
+                    if page:
+                        with open(f"{category}-{pagenum+1}.json", "w") as page_json:
+                            dump(page, page_json, indent=4, separators=(",", ": "))
+                        print("Done!\n")
+                        break
+                    else:
+                        print(f"Failure: {trail}")
 
-                else:
+                if not page:
                     with open("failure.log", "a") as failure_log:
                         failure_log.write(f"{link}&page={pagenum+1}\n")
                     print("Failed! Written to logs.\n")
