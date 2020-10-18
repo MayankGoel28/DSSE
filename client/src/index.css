@@ -23,6 +23,20 @@ code {
     width: 200px;
 }
 
+.product-title {
+    font-weight: 700;
+    font-size: 1.4em;
+    line-height: 1.2;
+}
+
+.product-rating {
+    font-size: 1.2em;
+}
+
+.product-price {
+    font-size: 2em;
+}
+
 .custom-bg-primary {
     background-color: #eeeeee !important;
 }
