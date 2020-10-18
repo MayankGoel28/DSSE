@@ -93,7 +93,7 @@ if __name__ == "__main__":
             for pagenum in range(MAX_PAGES):
                 print(f"Page: {pagenum+1}")
 
-                category = linkfile.split("/")[-1].split(".")[0]
+                category = linkfile.split("/")[-1].split(".")[0] + f"{index + 1}"
                 try:
                     for trail in range(5):
                         page = scrape_page(f"{link}?page={pagenum+1}")
