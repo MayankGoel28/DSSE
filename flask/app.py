@@ -21,8 +21,9 @@ def chat():
 
     return {
         "message": flow_output.query_result.fulfillment_text,
-        "predictions": get_predictions('Hello', 'books', 'biographies');
+        "predictions": get_predictions("Hello", "books", "biographies")[1],
     }
+
 
 if __name__ == "__main__":
     app.run(debug=True)

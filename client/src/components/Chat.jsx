@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Input, Button, Form } from "reactstrap";
+import { Container, Input, Button, Form, Badge } from "reactstrap";
 
 import axios from "axios";
 
@@ -328,6 +328,7 @@ export default ({ setContent, setLoading }) => {
 
     const [typing, setTyping] = useState(false);
     const [input, setInput] = useState("");
+    const [predictions, setPredictions] = useState([]);
     const [messages, setMessages] = useState([
         {
             id: 0,
@@ -355,11 +356,15 @@ export default ({ setContent, setLoading }) => {
                 { input: input },
                 { headers: { "Content-Type": "application/json" } }
             );
+            console.log(res);
 
-            setMessages([
-                ...newHistory,
-                { id: newHistory.length + 1, type: "in", content: res.data },
-            ]);
+            if (res.data.message !== "") {
+                setMessages([
+                    ...newHistory,
+                    { id: newHistory.length + 1, type: "in", content: res.data.message },
+                ]);
+            }
+            setPredictions(res.data.predictions);
             setContent(sample);
             setTyping(false);
             setLoading(false);
@@ -394,6 +399,16 @@ export default ({ setContent, setLoading }) => {
                         <img src="/send-white-18dp.svg" alt="Send" />
                     </Button>
                 </Form>
+                {predictions.length ? (
+                    <div className="mt-2">
+                        <div className="m-1"> Related keywords: </div>
+                        {predictions.map((p) => (
+                            <Badge color="dark" className="m-1 p-2">
+                                {p}
+                            </Badge>
+                        ))}
+                    </div>
+                ) : null}
             </Container>
         </Container>
     );
