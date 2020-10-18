@@ -74,63 +74,63 @@ def get_best_model(X=None, min_val=2, max_val=20, draw=False, show_top_labels=Fa
 
 if __name__ == "__main__":
     hierarchy = {
-        'books': [
-            'biographies',
-            'children',
-            'entertainment',
-            'fiction',
-            'history',
-            'money',
-            'psychology',
-            'religion',
-        ],
-        'electronics': [
-            'accessories',
-            'automobiles',
-            'cameras',
-            'computers',
-            'drones',
-            'surveillance',
-            'video',
-        ],
-        'food': [
-            'baking',
-            'candy',
-            'coffee',
-            'condiments',
-            'fresh',
-            'frozen',
-            'meals',
-            'snacks',
-        ],
-        'home': [
-            'appliances',
-            'bath',
-            'college',
-            'decor',
-            'furniture',
-            'kids',
-            'kitchen',
-            'matteresses',
-        ],
-        'movies': [
-            'animated',
-            'comedy',
-            'drama',
-            'horror',
-            'kids',
-            'romance',
-            'science',
-        ],
-        'music': [
-            'kids',
-            'nineties',
-            'reggage',
-        ],
-        'personal-care': [
+        # 'books': [
+        #     'biographies',
+        #     'children',
+        #     'entertainment',
+        #     'fiction',
+        #     'history',
+        #     'money',
+        #     'psychology',
+        #     'religion',
+        # ],
+        # 'electronics': [
+        #     'accessories',
+        #     'automobiles',
+        #     'cameras',
+        #     'computers',
+        #     'drones',
+        #     'surveillance',
+        #     'video',
+        # ],
+        # 'food': [
+        #     'baking',
+        #     'candy',
+        #     'coffee',
+        #     'condiments',
+        #     'fresh',
+        #     'frozen',
+        #     'meals',
+        #     'snacks',
+        # ],
+        # 'home': [
+        #     'appliances',
+        #     'bath',
+        #     'college',
+        #     'decor',
+        #     'furniture',
+        #     'kids',
+        #     'kitchen',
+        #     'mattresses',
+        # ],
+        # 'movies': [
+        #     'animated',
+        #     'comedy',
+        #     'drama',
+        #     'horror',
+        #     'kids',
+        #     'romance',
+        #     'science',
+        # ],
+        # 'music': [
+        #     'kids',
+        #     'nineties',
+        #     'reggae',
+        # ],
+        'personalcare': [
             'body',
             'dental',
-            'deodrants',
+            'deodorants',
             'hand',
             'mouthwash',
             'razors',
@@ -162,6 +162,7 @@ if __name__ == "__main__":
             with open(f'./models/{x}_{y}.search_indexing', 'w') as f:
                 json_str = json.dumps(search, indent=4)
                 f.write(json_str)
-            break
-        break
+        print(f"{x} DONE")
+            
+        
         
