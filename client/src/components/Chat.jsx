@@ -330,17 +330,7 @@ export default ({ setContent, setLoading }) => {
         {
             id: 0,
             type: "in",
-            content: "im1",
-        },
-        {
-            id: 1,
-            type: "out",
-            content: "om1",
-        },
-        {
-            id: 2,
-            type: "in",
-            content: "im2",
+            content: "Hello there! How may I help you today?",
         },
     ]);
 

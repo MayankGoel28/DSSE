@@ -24,6 +24,14 @@ code {
     display: none;
 }
 
+.in-message {
+    border-radius: 10px 20px 20px 20px !important;
+}
+
+.out-message {
+    border-radius: 20px 10px 20px 20px !important;
+}
+
 .greeting-container {
     height: 80vh;
 }
