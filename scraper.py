@@ -61,19 +61,20 @@ def scrape_page(url):
     return page
 
 
-for category, link in categories.items():
-    print(f"Now scraping: {category}")
-    for pagenum in range(MAX_PAGES):
-        print(f"Page: {pagenum+1}")
-        page = scrape_page(f"{link}&page={pagenum+1}")
+if __name__ == "__main__":
+    for category, link in categories.items():
+        print(f"Now scraping: {category}")
+        for pagenum in range(MAX_PAGES):
+            print(f"Page: {pagenum+1}")
+            page = scrape_page(f"{link}&page={pagenum+1}")
 
-        if page:
-            with open(f"{category}-{pagenum+1}.json", "w") as page_json:
-                dump(page, page_json, indent=4, separators=(",", ": "))
-            print("Done!\n")
-        else:
-            with open("failure.log", "a") as failure_log:
-                failure_log.write(f"{link}&page={pagenum+1}\n")
-            print("Failed! Written to logs.\n")
+            if page:
+                with open(f"{category}-{pagenum+1}.json", "w") as page_json:
+                    dump(page, page_json, indent=4, separators=(",", ": "))
+                print("Done!\n")
+            else:
+                with open("failure.log", "a") as failure_log:
+                    failure_log.write(f"{link}&page={pagenum+1}\n")
+                print("Failed! Written to logs.\n")
 
-print("gg.")
+    print("gg.")
