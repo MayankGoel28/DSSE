@@ -26,14 +26,16 @@ export default () => {
 
     const sendMessage = (e) => {
         e.preventDefault();
-        console.log(input);
+        if (input === "") return;
+
         setMessages([...messages, { id: messages.length + 1, type: "out", content: input }]);
+        // send input to server and update message list from response
         setInput("");
     };
 
     return (
         <Container fluid className="d-flex flex-column chatbar justify-content-between py-3">
-            <Container fluid>
+            <Container fluid className="overflow-auto mb-4">
                 {messages.map((message) =>
                     message.type === "in" ? (
                         <InMessage key={message.id} {...message} />
@@ -44,9 +46,15 @@ export default () => {
             </Container>
             <Container fluid className="px-0">
                 <Form className="d-flex flex-row" onSubmit={sendMessage}>
-                    <Input type="text" value={input} onChange={(e) => setInput(e.target.value)} />
-                    <Button color="secondary" className="ml-2">
-                        Send
+                    <Input
+                        autoFocus
+                        type="text"
+                        value={input}
+                        placeholder="Type a message..."
+                        onChange={(e) => setInput(e.target.value)}
+                    />
+                    <Button color="dark" className="ml-2 d-flex flex-column justify-content-center">
+                        <img src="/send-white-18dp.svg" alt="Send" />
                     </Button>
                 </Form>
             </Container>

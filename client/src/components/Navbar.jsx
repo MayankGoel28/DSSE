@@ -5,7 +5,7 @@ export default () => {
     return (
         <Navbar light className="custom-bg-primary mb-3">
             <NavbarBrand href="/" className="font-weight-bold custom-fg-primary">
-                E-Commerce Search Engine
+                {/* E-Commerce Search Engine */}
             </NavbarBrand>
         </Navbar>
     );
