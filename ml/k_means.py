@@ -1,28 +1,26 @@
 import json
 import pickle
+import os
 import numpy as np
-from nltk.stem import PorterStemmer
+# from nltk.stem import PorterStemmer
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.cluster import KMeans
 
 import matplotlib.pyplot as plt
 
-# TEMPORARY
-from clean_electronics import tags_list as corpus
-
-ps = PorterStemmer()
+# ps = PorterStemmer()
 vectorizer = TfidfVectorizer(analyzer='word', stop_words='english')
 
 def get_X_from_corpus(corpus=None):
-    sentences = []
-    for sentence in corpus:
-        temp = ""
-        for word in sentence.split():
-            temp += ps.stem(word) + " "
-        sentences.append(temp)
+    # sentences = []
+    # for sentence in corpus:
+    #     temp = ""
+    #     for word in sentence.split():
+    #         temp += ps.stem(word) + " "
+    #     sentences.append(temp)
 
-    X = vectorizer.fit_transform(sentences)
+    X = vectorizer.fit_transform(corpus)
     return X
 
 def get_best_model(X=None, min_val=2, max_val=20, draw=False, show_top_labels=False):
@@ -62,21 +60,108 @@ def get_best_model(X=None, min_val=2, max_val=20, draw=False, show_top_labels=Fa
                 print(terms[i], end=" ")
             print()
 
-    return best_model, best_k
+    result = []
+    order_centroids = model.cluster_centers_.argsort()[:, ::-1]
+    terms = vectorizer.get_feature_names()    
+    for k in range(best_k):
+        temp = []
+        for i in order_centroids[k, :10]:
+            # print(terms[i], end=" ")
+            temp.append(terms[i])
+        # print()
+        result.append(temp)
+    return best_model, best_k, result
 
 if __name__ == "__main__":
-    hierarchy = {}
+    hierarchy = {
+        'books': [
+            'biographies',
+            'children',
+            'entertainment',
+            'fiction',
+            'history',
+            'money',
+            'psychology',
+            'religion',
+        ],
+        'electronics': [
+            'accessories',
+            'automobiles',
+            'cameras',
+            'computers',
+            'drones',
+            'surveillance',
+            'video',
+        ],
+        'food': [
+            'baking',
+            'candy',
+            'coffee',
+            'condiments',
+            'fresh',
+            'frozen',
+            'meals',
+            'snacks',
+        ],
+        'home': [
+            'appliances',
+            'bath',
+            'college',
+            'decor',
+            'furniture',
+            'kids',
+            'kitchen',
+            'matteresses',
+        ],
+        'movies': [
+            'animated',
+            'comedy',
+            'drama',
+            'horror',
+            'kids',
+            'romance',
+            'science',
+        ],
+        'music': [
+            'kids',
+            'nineties',
+            'reggage',
+        ],
+        'personal-care': [
+            'body',
+            'dental',
+            'deodrants',
+            'hand',
+            'mouthwash',
+            'razors',
+            'toothpaste',
+        ],
+        
+    }
+
+    # os.chdir('.')
+    # with os.scandir('.') as dirs:
+    #     for entry in dirs:
+    #         print(entry)
 
     for x in hierarchy.keys():
         for y in hierarchy[x]:
             ### LOAD INPUT HERE
-            corpus = None
+            f = open(f"./indexed/{x}_jsons/{x}_{y}.txt", 'r').read()
+            corpus = eval(f)
             ### DONE LOADING THE CLEANED INPUT
 
             X = get_X_from_corpus(corpus)
-            model, z = get_best_model(X)
+            model, z, search = get_best_model(X)
             
             # x is category
             # y is sub-category
             # z is k size selected
-            pickle.dump(model, open(f'models/{x}/{y}.model', 'wb'))
+            pickle.dump(model, open(f'./models/{x}_{y}.model', 'wb'))
+            pickle.dump(vectorizer, open(f'./models/{x}_{y}.vectorizer', 'wb'))
+            with open(f'./models/{x}_{y}.search_indexing', 'w') as f:
+                json_str = json.dumps(search, indent=4)
+                f.write(json_str)
+            break
+        break
+        

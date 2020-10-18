@@ -1,6 +1,7 @@
 # UTILITY
 import numpy as np
 import pickle
+import json
 
 # NLP
 from nltk.stem import PorterStemmer
@@ -26,19 +27,26 @@ def get_predictions(user_input, category, sub_category):
             the specific of the above
     """
     
-    model = pickle.load(open(f'{category}/{sub_category}.model', 'rb'))
-
+    model = pickle.load(open(f'models/{category}_{sub_category}.model', 'rb'))
+    vectorizer = pickle.load(open(f'models/{category}_{sub_category}.vectorizer', 'rb'))
+    terms_indexed = json.load(open(f'models/{category}_{sub_category}.search_indexing', 'rb'))
+    
     cleaned_input = ""
     for word in sorted(user_input.lower().split()):
-        cleaned_input += ps.stem(word) + " "
+        cleaned_input += word + " "
 
     Y = vectorizer.transform([cleaned_input])
     prediction = model.predict(Y)[0]+1
-    print(prediction)
+    # print(prediction)
 
     scores = []
     for center in model.cluster_centers_:
         scores.append(-np.linalg.norm(center-Y))
     
-    for score in sorted(softmax(scores), reverse=True):
-        print(f"{round(score*100, 2)}%")
+    # for score in sorted(softmax(scores), reverse=True):
+    #     print(f"{round(score*100, 2)}%")
+    # sorted(softmax(scores), reverse=True)
+    return prediction, terms_indexed[prediction]
+
+cluster_number, terms_indexed = get_predictions('Hello', 'books', 'biographies')
+print(cluster_number); print(terms_indexed)
