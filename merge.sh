@@ -5,5 +5,5 @@ then
     exit 1
 fi 
 
-cat "$1"-* > "$1".json
+cat "$1"*.json > "$1".json
 sed -i 's/\]\[/,/g' "$1".json

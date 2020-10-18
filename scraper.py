@@ -3,8 +3,12 @@ from pprint import pprint
 from requests import get
 from json import dump
 from re import sub
+from functools import wraps
+import errno
+import os
+import signal
 
-MAX_PAGES = 1
+MAX_PAGES = 25
 
 XPATHS = {
     "products": "//a[@class='product-title-link line-clamp line-clamp-2 truncate-title']/@href",
@@ -20,11 +24,28 @@ XPATHS = {
 
 host = "https://www.walmart.com"
 
-categories = {
-    "electronics": "https://www.walmart.com/search/?cat_id=3944&sort=best_seller",
-    "food": "https://www.walmart.com/search/?cat_id=976759&sort=best_seller",
-    "personal_care": "https://www.walmart.com/search/?cat_id=976759&&sort=best_seller",
-}
+linkfile = "links/food.txt"
+
+class TimeoutError(Exception):
+    pass
+
+def timeout(seconds=10, error_message=os.strerror(errno.ETIME)):
+    def decorator(func):
+        def _handle_timeout(signum, frame):
+            raise TimeoutError(error_message)
+
+        def wrapper(*args, **kwargs):
+            signal.signal(signal.SIGALRM, _handle_timeout)
+            signal.alarm(seconds)
+            try:
+                result = func(*args, **kwargs)
+            finally:
+                signal.alarm(0)
+            return result
+
+        return wraps(func)(wrapper)
+
+    return decorator
 
 
 def scrape_item(url):
@@ -53,7 +74,7 @@ def scrape_item(url):
 
     return item
 
-
+@timeout(60)
 def scrape_page(url):
     text = get(url).text
     selector = Selector(text=text)
@@ -64,30 +85,34 @@ def scrape_page(url):
 
 
 if __name__ == "__main__":
-    for category, link in categories.items():
-        print(f"Now scraping: {category}")
-        for pagenum in range(MAX_PAGES):
-            print(f"Page: {pagenum+1}")
+    with open(linkfile, "r") as scrapfile:
+        for index, link in enumerate(scrapfile):
+            # Remove \n
+            link = link[:-1]
+            print(f"Now scraping: {link}")
+            for pagenum in range(MAX_PAGES):
+                print(f"Page: {pagenum+1}")
 
-            try:
-                for trail in range(3):
-                    page = scrape_page(f"{link}&page={pagenum+1}")
+                category = linkfile.split("/")[-1].split(".")[0]
+                try:
+                    for trail in range(5):
+                        page = scrape_page(f"{link}?page={pagenum+1}")
 
-                    if page:
-                        with open(f"{category}-{pagenum+1}.json", "w") as page_json:
-                            dump(page, page_json, indent=4, separators=(",", ": "))
-                        print("Done!\n")
-                        break
-                    else:
-                        print(f"Failure: {trail}")
+                        if page:
+                            with open(f"{category}-{pagenum+1}.json", "w") as page_json:
+                                dump(page, page_json, indent=4, separators=(",", ": "))
+                            print("Done!\n")
+                            break
+                        else:
+                            print(f"Failure: {trail}")
 
-                if not page:
-                    with open("failure.log", "a") as failure_log:
-                        failure_log.write(f"{link}&page={pagenum+1}\n")
-                    print("Failed! Written to logs.\n")
+                    if not page:
+                        with open("failure.log", "a") as failure_log:
+                            failure_log.write(f"{link}&page={pagenum+1}\n")
+                        print("Failed! Written to logs.\n")
 
-            except Exception as e:
-                print("Something went wrong.")
-                print(e)
+                except Exception as e:
+                    print("Something went wrong.")
+                    print(e)
 
-    print("gg.")
+        print("gg.")
