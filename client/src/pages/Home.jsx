@@ -3,6 +3,7 @@ import { Container, Row, Col } from "reactstrap";
 
 import Chat from "../components/Chat";
 import Greeting from "../components/Greeting";
+import ProductItem from "../components/ProductItem";
 
 export default () => {
     const [content, setContent] = useState([]);
@@ -12,11 +13,13 @@ export default () => {
             <Row className="mx-3">
                 <Col>
                     {content.length > 0 ? (
-                        <Container fluid>
+                        <Row>
                             {content.map((item) => (
-                                <h1> {item.title} </h1>
+                                <Col md={4} className="d-flex" key={item.url}>
+                                    <ProductItem {...item} />
+                                </Col>
                             ))}
-                        </Container>
+                        </Row>
                     ) : (
                         <Greeting />
                     )}

@@ -19,6 +19,10 @@ code {
     height: 80vh;
 }
 
+.product-img {
+    width: 200px;
+}
+
 .custom-bg-primary {
     background-color: #eeeeee !important;
 }
