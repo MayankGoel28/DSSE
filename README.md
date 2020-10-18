@@ -8,7 +8,7 @@ The domain for this Implementation is Walmart, a hugely popular e-commerce websi
     - [Web Crawling](#Web-Crawling)
     - [Indexing](#Indexing)
     - [Clustering](#Clustering)
-    - [Search Engine] (#Search-Engine)
+    - [Search Engine](#Search-Engine)
 - [Members](#Members)
 - [Basic Working Version](#Basic-Working-Version)
     - [Features](#Features)
