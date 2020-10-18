@@ -1,15 +1,17 @@
 from flask import Flask, request, jsonify
 from pprint import pprint
 from dialog import DialogFlow
+from ml.prediction import get_predictions
 
 app = Flask(__name__)
 dflow = DialogFlow()
 
-@app.route('/chat/', methods=['POST'])
+
+@app.route("/chat/", methods=["POST"])
 def chat():
     req_data = request.get_json()
     input_query = req_data["input"]
-    
+
     try:
         flow_output = dflow.collect_intent(input_query)
     except Exception as error:
@@ -17,7 +19,10 @@ def chat():
         return "Error"
     pprint(flow_output)
 
-    return flow_output.query_result.fulfillment_text
+    return {
+        "message": flow_output.query_result.fulfillment_text,
+        "predictions": get_predictions('Hello', 'books', 'biographies');
+    }
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
