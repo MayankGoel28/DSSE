@@ -15,7 +15,7 @@ The domain for this Implementation is Walmart, a hugely popular e-commerce websi
 
 ## About
 
-### Idea
+### Our Idea
 Walmart expects customers from all over the world. It needs a product search engine that can cater to a lot of people from diverse background and culture, which in turn requires the search engine to be **simple and user-friendly**. And this is exactly what we have attempted to achieve.
 
 Our aim, thus, was not only to manage a **sophisticated** enough model that produces relevant result on search queries, but also maintain a UI that ensures maximal convenience and satisfaction for the user.
