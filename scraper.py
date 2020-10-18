@@ -24,7 +24,7 @@ XPATHS = {
 
 host = "https://www.walmart.com"
 
-linkfile = "links/movies.txt"
+linkfile = "links/sports.txt"
 
 class TimeoutError(Exception):
     pass
