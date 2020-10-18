@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Container, Input, Button, Form } from "reactstrap";
 
+import axios from "axios";
+
 import InMessage from "./InMessage";
 import OutMessage from "./OutMessage";
 
@@ -347,15 +349,21 @@ export default ({ setContent, setLoading }) => {
         setMessages(newHistory);
 
         // send input to server; update message list and setContent from response
-        setTimeout(() => {
+        setTimeout(async () => {
+            const res = await axios.post(
+                "/chat/",
+                { input: input },
+                { headers: { "Content-Type": "application/json" } }
+            );
+
             setMessages([
                 ...newHistory,
-                { id: newHistory.length + 1, type: "in", content: "bruh" },
+                { id: newHistory.length + 1, type: "in", content: res.data },
             ]);
             setContent(sample);
             setTyping(false);
             setLoading(false);
-        }, 2000);
+        }, 1000);
 
         setInput("");
     };
