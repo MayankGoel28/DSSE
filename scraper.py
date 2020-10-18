@@ -53,10 +53,7 @@ def scrape_page(url):
     text = get(url).text
     selector = Selector(text=text)
     products = selector.xpath(XPATHS["products"]).getall()
-    page = []
-    for product in products:
-        item = scrape_item(f"{host}{product}")
-        page.append(item)
+    page = [scrape_item(f"{host}{product}") for product in products]
 
     return page
 
@@ -66,15 +63,22 @@ if __name__ == "__main__":
         print(f"Now scraping: {category}")
         for pagenum in range(MAX_PAGES):
             print(f"Page: {pagenum+1}")
-            page = scrape_page(f"{link}&page={pagenum+1}")
 
-            if page:
-                with open(f"{category}-{pagenum+1}.json", "w") as page_json:
-                    dump(page, page_json, indent=4, separators=(",", ": "))
-                print("Done!\n")
-            else:
-                with open("failure.log", "a") as failure_log:
-                    failure_log.write(f"{link}&page={pagenum+1}\n")
-                print("Failed! Written to logs.\n")
+            try:
+                page = scrape_page(f"{link}&page={pagenum+1}")
+
+                if page:
+                    with open(f"{category}-{pagenum+1}.json", "w") as page_json:
+                        dump(page, page_json, indent=4, separators=(",", ": "))
+                    print("Done!\n")
+
+                else:
+                    with open("failure.log", "a") as failure_log:
+                        failure_log.write(f"{link}&page={pagenum+1}\n")
+                    print("Failed! Written to logs.\n")
+
+            except Exception as e:
+                print("Something went wrong.")
+                print(e)
 
     print("gg.")
