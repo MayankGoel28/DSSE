@@ -10,7 +10,7 @@ export default () => {
                 <Col>
                     <h1> welcome </h1>
                 </Col>
-                <Col className="bg-danger" md={4}>
+                <Col className="border-left" md={4}>
                     <Chat />
                 </Col>
             </Row>

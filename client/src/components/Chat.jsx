@@ -21,15 +21,17 @@ export default () => {
     ];
 
     return (
-        <Container fluid className="d-flex flex-column chatbar justify-content-between">
+        <Container fluid className="d-flex flex-column chatbar justify-content-between py-3">
             <Container fluid>
                 {messages.map((message) =>
                     message.type === "in" ? <InMessage {...message} /> : <OutMessage {...message} />
                 )}
             </Container>
-            <Container fluid className="d-flex flex-row">
+            <Container fluid className="d-flex flex-row px-0">
                 <Input type="text" />
-                <Button> Send </Button>
+                <Button color="primary" className="ml-2">
+                    Send
+                </Button>
             </Container>
         </Container>
     );
