@@ -365,7 +365,7 @@ export default ({ setContent, setLoading }) => {
                 ]);
             }
             setPredictions(res.data.predictions);
-            setContent([{ ...res.data }]);
+            setContent(res.data.objs);
             setTyping(false);
             setLoading(false);
         }, 1000);

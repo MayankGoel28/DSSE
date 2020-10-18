@@ -35,7 +35,7 @@ def chat():
 
     return {
         "message": flow_output.query_result.fulfillment_text,
-        "predictions": get_predictions(input_query, scs[0], scs[1])[1],
+        "predictions": get_predictions(input_query, scs[0], scs[1])[1] if len(scs) else [],
         "objs": objs,
     }
 
