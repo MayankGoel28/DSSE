@@ -4,7 +4,7 @@ import { Container, Input, Button, Form } from "reactstrap";
 import InMessage from "./InMessage";
 import OutMessage from "./OutMessage";
 
-export default ({ setContent }) => {
+export default ({ setContent, setLoading }) => {
     // sample content {{{
     const sample = [
         {
@@ -324,6 +324,7 @@ export default ({ setContent }) => {
     ];
     // }}}
 
+    const [typing, setTyping] = useState(false);
     const [input, setInput] = useState("");
     const [messages, setMessages] = useState([
         {
@@ -347,16 +348,31 @@ export default ({ setContent }) => {
         e.preventDefault();
         if (input === "") return;
 
-        setMessages([...messages, { id: messages.length + 1, type: "out", content: input }]);
+        setTimeout(() => {
+            setTyping(true);
+            setLoading(true);
+        }, 80);
+
+        const newHistory = [...messages, { id: messages.length + 1, type: "out", content: input }];
+        setMessages(newHistory);
+
         // send input to server; update message list and setContent from response
-        setContent(sample);
+        setTimeout(() => {
+            setMessages([
+                ...newHistory,
+                { id: newHistory.length + 1, type: "in", content: "bruh" },
+            ]);
+            setContent(sample);
+            setTyping(false);
+            setLoading(false);
+        }, 2000);
 
         setInput("");
     };
 
     return (
         <Container fluid className="d-flex flex-column chatbar justify-content-between py-3">
-            <Container fluid className="overflow-auto mb-4">
+            <Container fluid className="overflow-auto mb-4 message-container">
                 {messages.map((message) =>
                     message.type === "in" ? (
                         <InMessage key={message.id} {...message} />
@@ -364,11 +380,13 @@ export default ({ setContent }) => {
                         <OutMessage key={message.id} {...message} />
                     )
                 )}
+                {typing ? <InMessage typing /> : null}
             </Container>
             <Container fluid className="px-0">
                 <Form className="d-flex flex-row" onSubmit={sendMessage}>
                     <Input
                         autoFocus
+                        disabled={typing}
                         type="text"
                         value={input}
                         placeholder="Type a message..."

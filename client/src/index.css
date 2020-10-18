@@ -15,6 +15,15 @@ code {
     height: 92vh;
 }
 
+.message-container {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.message-container::-webkit-scrollbar {
+    display: none;
+}
+
 .greeting-container {
     height: 80vh;
 }

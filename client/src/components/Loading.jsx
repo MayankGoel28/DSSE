@@ -1,5 +1,6 @@
 import React from "react";
 import { Container } from "reactstrap";
+import { Spinner } from "reactstrap";
 import FadeIn from "react-fade-in";
 
 export default () => {
@@ -9,8 +10,7 @@ export default () => {
             tag={FadeIn}
             className="d-flex flex-column justify-content-center align-items-center greeting-container"
         >
-            <h1 className="display-3"> Welcome! </h1>
-            <h3 className="mt-3 text-muted"> Message the bot to get started. </h3>
+            <Spinner style={{ width: "5rem", height: "5rem" }} />
         </Container>
     );
 };
