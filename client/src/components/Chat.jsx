@@ -4,7 +4,7 @@ import { Container, Input, Button, Form } from "reactstrap";
 import InMessage from "./InMessage";
 import OutMessage from "./OutMessage";
 
-export default () => {
+export default ({ setContent }) => {
     const [input, setInput] = useState("");
     const [messages, setMessages] = useState([
         {
@@ -29,7 +29,9 @@ export default () => {
         if (input === "") return;
 
         setMessages([...messages, { id: messages.length + 1, type: "out", content: input }]);
-        // send input to server and update message list from response
+        // send input to server; update message list and setContent from response
+        setContent([{ title: input }]);
+
         setInput("");
     };
 

@@ -15,6 +15,10 @@ code {
     height: 92vh;
 }
 
+.greeting-container {
+    height: 80vh;
+}
+
 .custom-bg-primary {
     background-color: #eeeeee !important;
 }

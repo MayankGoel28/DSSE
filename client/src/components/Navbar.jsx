@@ -3,9 +3,9 @@ import { Navbar, NavbarBrand } from "reactstrap";
 
 export default () => {
     return (
-        <Navbar light className="custom-bg-primary mb-3">
+        <Navbar light className="custom-bg-primary">
             <NavbarBrand href="/" className="font-weight-bold custom-fg-primary">
-                {/* E-Commerce Search Engine */}
+                ECSE
             </NavbarBrand>
         </Navbar>
     );
