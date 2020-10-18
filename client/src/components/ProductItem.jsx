@@ -11,9 +11,9 @@ export default (props) => {
             <CardBody className="d-flex flex-column justify-content-between">
                 <div className="product-title">{props.title}</div>
                 <Row className="mt-4">
-                    <Col className="product-rating my-auto">
-                        ★ {props.stars} ({props.ratings.trim()})
-                    </Col>
+                    {/* <Col className="product-rating my-auto"> */}
+                    {/*     ★ {props.stars} ({props.ratings.trim()}) */}
+                    {/* </Col> */}
                     <Col className="product-price text-right">{props.price}</Col>
                 </Row>
             </CardBody>

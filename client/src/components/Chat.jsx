@@ -365,7 +365,7 @@ export default ({ setContent, setLoading }) => {
                 ]);
             }
             setPredictions(res.data.predictions);
-            setContent(sample);
+            setContent([{ ...res.data }]);
             setTyping(false);
             setLoading(false);
         }, 1000);

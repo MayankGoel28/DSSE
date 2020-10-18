@@ -1,12 +1,21 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
+
+
 import os
 from nltk.corpus import wordnet as wn
 from nltk.corpus import stopwords
 
 
+# In[2]:
+
+
 def best_file(keyword):
     top = os.getcwd()
     dir_names = []
-    for subdir, dirs, files in os.walk(r"./"):
+    for subdir, dirs, files in os.walk(r"./ml/cleaned/"):
         for diry in dirs:
             dir_names.append(diry)
     dir_names = dir_names[1:]
@@ -23,7 +32,7 @@ def best_file(keyword):
             continue
     most_similar_score = 0
     subcats = []
-    for subdir, dirs, files in os.walk(r"./"):
+    for subdir, dirs, files in os.walk(r"./ml/cleaned/"):
         for file in files:
             if category in file and file.endswith(".json"):
                 subcats.append(file.split("_")[2].split(".")[0])
@@ -37,15 +46,23 @@ def best_file(keyword):
                 most_similar_score = x
                 sub_category = name
         except:
-            sub_category = index[0]
             continue
 
     return (category, sub_category)
 
 
+# In[3]:
+
+
+cat, subcat = best_file("dog")
+
+
+# In[4]:
+
+
 def best_object(word, cat, subcat):
     stopwordsy = stopwords.words("english")
-    file = open(f"{cat}/clean_{cat}_{subcat}.json", "r")
+    file = open(f"./ml/cleaned/{cat}/clean_{cat}_{subcat}.json", "r")
     f = file.read()
     data = eval(f)
     try:
@@ -79,5 +96,13 @@ def best_object(word, cat, subcat):
         if avg_score > max_sim_score:
             buy_this = things
             max_sim_score = avg_score
-
     return buy_this
+
+
+# In[5]:
+
+
+best_object("dog", "toys", "girls")
+
+
+# In[ ]:

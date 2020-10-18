@@ -1,0 +1,167 @@
+query_result {
+  query_text: "mroe"
+  action: "input.unknown"
+  parameters {
+  }
+  all_required_params_present: true
+  fulfillment_text: "I\'m afraid I don\'t understand."
+  fulfillment_messages {
+    text {
+      text: "I\'m afraid I don\'t understand."
+    }
+  }
+  output_contexts {
+    name: "projects/ecommerce-292912/agent/sessions/9999999999/contexts/__system_counters__"
+    lifespan_count: 1
+    parameters {
+      fields {
+        key: "books"
+        value {
+          string_value: ""
+        }
+      }
+      fields {
+        key: "books.original"
+        value {
+          string_value: ""
+        }
+      }
+      fields {
+        key: "movies"
+        value {
+          string_value: "horror"
+        }
+      }
+      fields {
+        key: "movies.original"
+        value {
+          string_value: "horror"
+        }
+      }
+      fields {
+        key: "no-input"
+        value {
+          number_value: 0.0
+        }
+      }
+      fields {
+        key: "no-match"
+        value {
+          number_value: 2.0
+        }
+      }
+      fields {
+        key: "product"
+        value {
+          list_value {
+            values {
+              string_value: "movies"
+            }
+          }
+        }
+      }
+      fields {
+        key: "product.original"
+        value {
+          list_value {
+            values {
+              string_value: "movies"
+            }
+          }
+        }
+      }
+    }
+  }
+  intent {
+    name: "projects/ecommerce-292912/agent/intents/b94a2394-fa03-48db-8ac5-aa0568d2c2dc"
+    display_name: "Default Fallback Intent"
+    is_fallback: true
+  }
+  intent_detection_confidence: 1.0
+  language_code: "en"
+}
+
+127.0.0.1 - - [18/Oct/2020 17:30:28] "POST /chat/ HTTP/1.0" 200 -
+response_id: "d20fdc01-da79-4c70-836b-aa488d35f869-fddac391"
+query_result {
+  query_text: "iphone"
+  action: "input.unknown"
+  parameters {
+  }
+  all_required_params_present: true
+  fulfillment_text: "I don\'t think I\'m qualified to answer that yet."
+  fulfillment_messages {
+    text {
+      text: "I don\'t think I\'m qualified to answer that yet."
+    }
+  }
+  output_contexts {
+    name: "projects/ecommerce-292912/agent/sessions/9999999999/contexts/__system_counters__"
+    lifespan_count: 1
+    parameters {
+      fields {
+        key: "books"
+        value {
+          string_value: ""
+        }
+      }
+      fields {
+        key: "books.original"
+        value {
+          string_value: ""
+        }
+      }
+      fields {
+        key: "movies"
+        value {
+          string_value: "horror"
+        }
+      }
+      fields {
+        key: "movies.original"
+        value {
+          string_value: "horror"
+        }
+      }
+      fields {
+        key: "no-input"
+        value {
+          number_value: 0.0
+        }
+      }
+      fields {
+        key: "no-match"
+        value {
+          number_value: 3.0
+        }
+      }
+      fields {
+        key: "product"
+        value {
+          list_value {
+            values {
+              string_value: "movies"
+            }
+          }
+        }
+      }
+      fields {
+        key: "product.original"
+        value {
+          list_value {
+            values {
+              string_value: "movies"
+            }
+          }
+        }
+      }
+    }
+  }
+  intent {
+    name: "projects/ecommerce-292912/agent/intents/b94a2394-fa03-48db-8ac5-aa0568d2c2dc"
+    display_name: "Default Fallback Intent"
+    is_fallback: true
+  }
+  intent_detection_confidence: 1.0
+  language_code: "en"
+}
